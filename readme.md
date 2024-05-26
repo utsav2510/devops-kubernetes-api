@@ -21,6 +21,7 @@
 - To view the deployment health by UID, use the API `/deployment/{namespace}/{uid}` under `deployment` category.
 - When running the `/createallresource` if the API fails, all resources created in that particular request will be deleted.
 - Only one label named `app` will be created for deployment and to identify deployment in that service. The label value will be same as deployment name.
+- Python Kubernetes documentation link [doc](https://github.com/kubernetes-client/python/tree/master/kubernetes/docs)
 
 ## Steps to start
 1. Clone the git project.
@@ -33,11 +34,11 @@
 `python main.py`
 8. Open browser and go to `http://localhost:8000` (make sure no other process is using port 8000).
 9. Expand the API `/createallresource` under `general` category
-10. Click on `Try it out` ![alt text](assets/image.png)
+10. Click on `Try it out` ![scr1](assets/image.png)
 11. Execute with the sample request body or update as per requirement.
 12. To view the resources you can run `kubectl` commands in the command prompt or go to the minikube dashboard by running the command <br> `minikube dashboard`
 13. To access a ports using the service created, run the command <br> 
-`minikube service <service-name> -n <namespace>`. This will tunnel the ports in the service as shown below:![alt text](assets\image2.png)
+`minikube service <service-name> -n <namespace>`. This will tunnel the ports in the service as shown below:![scr2](assets\image2.png)
 
 
 
