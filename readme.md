@@ -22,6 +22,7 @@
 - When running the `/createallresource` if the API fails, all resources created in that particular request will be deleted.
 - Only one label named `app` will be created for deployment and to identify deployment in that service. The label value will be same as deployment name.
 - Python Kubernetes documentation link [doc](https://github.com/kubernetes-client/python/tree/master/kubernetes/docs)
+- All the `POST` requests have examples defined and can be used directly.
 
 ## Steps to start
 1. Clone the git project.
