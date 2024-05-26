@@ -38,7 +38,7 @@
 11. Execute with the sample request body or update as per requirement.
 12. To view the resources you can run `kubectl` commands in the command prompt or go to the minikube dashboard by running the command <br> `minikube dashboard`
 13. To access a ports using the service created, run the command <br> 
-`minikube service <service-name> -n <namespace>`. This will tunnel the ports in the service as shown below:![scr2](assets\image2.png)
+`minikube service <service-name> -n <namespace>`. This will tunnel the ports in the service as shown below:![scr2](assets/image2.png)
 
 
 
