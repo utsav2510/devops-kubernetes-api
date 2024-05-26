@@ -58,10 +58,10 @@ def create_hpa(hpa: HorizontalPodAutoscaler):
             max_replicas=hpa.spec.max_replicas,
             metrics= [
                 client.V2MetricSpec(type="Resource",resource=client.V2ResourceMetricSource(
-                    name="cpu",target=client.V2MetricTarget(average_value=hpa.spec.cpu_utilization_percentage,type="Utilization")
+                    name="cpu",target=client.V2MetricTarget(average_utilization=hpa.spec.cpu_utilization_percentage,type="Utilization")
                 )),
                 client.V2MetricSpec(type="Resource",resource=client.V2ResourceMetricSource(
-                    name="memory",target=client.V2MetricTarget(average_value=hpa.spec.memory_utilization_percentage,type="Utilization")
+                    name="memory",target=client.V2MetricTarget(average_utilization=hpa.spec.memory_utilization_percentage,type="Utilization")
                 ))
             ]            
         )
