@@ -8,7 +8,7 @@
 
 ### Guides & Assumptions
 
-- Kubernetes config file is located in home directory under ".kube/config".
+- Kubernetes config file is located in user home directory under `.kube/config`.
 - Minikube is used as Kubernetes service. Some commands below are specific to minikube and start with *minikube*. If you are using some other Kubernetes service please make changes accordingly. [Minikube install and start guide](https://minikube.sigs.k8s.io/docs/start/)
 - Python version 3.12.0 is used
 - Commands below are as per Windows 10 OS. Update the commands as per requirement.
