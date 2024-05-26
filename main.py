@@ -29,7 +29,6 @@ def list_namespaces():
 def create_namespace(namespace: Namespace):
     try:
         new_namespace = client.V1Namespace(metadata=client.V1ObjectMeta(name=namespace.name), api_version="v1", kind="Namespace")
-        print("Creating the namespace now")
         created_namespace = v1.create_namespace(body=new_namespace)
         
         return created_namespace.to_dict()
@@ -69,12 +68,11 @@ def create_hpa(hpa: HorizontalPodAutoscaler):
     )
     try:
         resp = autoscalingv2.create_namespaced_horizontal_pod_autoscaler(hpa.namespace.name, horizontalpodautoscaler)
-        print("HPA created.")
-        return resp
+        return resp.to_dict()
     except client.exceptions.ApiException as e:
         raise HTTPException(status_code=e.status, detail=f"Error creating HPA: {e}")
 
-@app.post("service/nodeport", tags=["Service"])
+@app.post("/service/nodeport", tags=["Service"])
 def create_node_port_service(nps: NodePortService):
     try:
         service_container_ports_object = []
@@ -99,7 +97,7 @@ def create_node_port_service(nps: NodePortService):
     except client.exceptions.ApiException as e:
         raise HTTPException(status_code=e.status, detail=f"Error: {e}")
 
-@app.delete("service/nodeport/{namespace}/{name}", tags=["Deployment"])
+@app.delete("/service/nodeport/{namespace}/{name}", tags=["Service"])
 def delete_node_port_service(namespace:str,name:str):
     try:
         service = v1.delete_namespaced_service(name=name,namespace=namespace)
@@ -205,16 +203,14 @@ def create_all_resources(res: CreateAllResources):
         #Create namespace if it doesn't exist
         try:
             v1.read_namespace(name=res.deployment.namespace.name)
-            print(f"Namespace '{res.deployment.namespace.name}' already exists.")
             
         except client.exceptions.ApiException as e:
             if e.status == 404:
                 # Namespace does not exist, create it
-                print("Creating namespace")
+                
                 create_namespace(Namespace(name=res.deployment.namespace.name))
                 NameSpaceCreated = True
             else:
-                print(f"An error occurred: {e}")
                 raise HTTPException(status_code=e.status, detail=f"Error creating namespace: {e}")
         
         #Create deployment set
@@ -228,7 +224,7 @@ def create_all_resources(res: CreateAllResources):
         #Create HPA
         hpa = create_hpa(HorizontalPodAutoscaler(namespace=res.deployment.namespace,deployment_name=res.deployment.name,spec=res.horizontalpodautoscalerspec))
         
-        return {"namespace": f"{res.deployment.namespace.name}", "deployment":deployment.to_dict(),"service": service.to_dict(), "horizontalpodautoscaler": hpa.to_dict()}
+        return {"namespace": f"{res.deployment.namespace.name}", "deployment":deployment,"service": service, "horizontalpodautoscaler": hpa}
 
     except client.exceptions.ApiException as e:
         if(NameSpaceCreated):
@@ -239,6 +235,8 @@ def create_all_resources(res: CreateAllResources):
             if(ServiceCreated):
                 delete_node_port_service(namespace=res.deployment.namespace.name, name=f"{res.deployment.name}-nodeport")
                 
+        raise HTTPException(status_code=e.status, detail=f"Error: {e}")
+    except Exception as e:
         raise HTTPException(status_code=e.status, detail=f"Error: {e}")
 
 
